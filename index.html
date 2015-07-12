@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sketch Pad</title>
+<link rel="stylesheet" type="text/css" href="css/sketchpad.css" />
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+</head>
+<body>
+<div id="header">
+<button id="color">Color Change</button>
+<button id="opacity">Opacity Change</button>
+<button id="mousetrail">Mouse Trail</button>
+<button id="size">Size</buttons>
+<button id="reset">Reset</buttons>
+</div>
+<div id="sketchpad">
+</div>
+<script>
+var gridWidth = 600;
+function createGrid (numSquares)
+{
+  
+  var webstring = "";
+  var newwidth =  gridWidth / numSquares; 
+  var newheight =  gridWidth / numSquares ;
+  console.log(newwidth);
+  $('#sketchpad').html("");
+  for(var j = 0; j < numSquares; j++)
+  {
+
+    //webstring += '<div class="row">';
+    var row = document.createElement("div");
+    row.className = "row";
+    for(var i = 0; i < numSquares; i++)
+    {
+      row.appendChild(document.createElement("div"));
+    }
+  $('#sketchpad').append(row);
+  }
+  $('#sketchpad div.row div').css("width",newwidth);
+  $('#sketchpad div.row div').css("height",newheight);
+  
+}
+
+function mouseTrails() {
+     
+     
+     $('#sketchpad div.row div').css('background-color','black').css('opacity',1);  
+  $('#sketchpad div.row div').off("mouseenter").mouseenter(function() {
+    $(this).css('background','#fff').css('transition', 'background .15 ease-in-out');
+    
+  });
+  $('#sketchpad div.row div').off("mouseleave").mouseleave(function() {
+    $(this).css('background','#000').css('transition', 'background .75s ease-in-out');
+    
+  });
+}
+
+function opacityChange() {
+  $('#sketchpad div.row div').off("mouseenter").mouseenter(function() {
+     var currentOpacity = $(this).css("opacity");
+     console.log(currentOpacity);
+     if (currentOpacity < 1)
+     {
+       $(this).css("opacity",currentOpacity * 1.28);
+     }
+     if (currentOpacity == 0)
+     {
+       $(this).css("opacity",.1);
+     }
+    console.log("CHANGE");
+  } );
+}
+
+function colorChange() {
+  $('#sketchpad div.row div').off("mouseenter").mouseenter(function() {
+    var newColor = getRandomColor();
+    console.log("Change" + newColor);
+    $(this).css("opacity", 1);
+    $(this).css('background',newColor);
+  });
+
+}
+
+function getRandomColor() {
+  var letters = '0123456789ABCDEF'.split('');
+  var color = '#';
+  for (var i = 0; i < 6; i++ ) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+function resetOpacity()
+{
+  $('#sketchpad div.row div').css("background-color","black").css("opacity",0).off('mouseenter').off('mouseleave').css('transition','');
+}
+
+function removeBorder() {
+  $('#sketchpad div.row div').css('margin','0px');
+}
+
+function setOpacityHandler() {
+  resetOpacity();
+  console.log("Set Opacity Change");
+  opacityChange();
+   
+}
+
+// Main
+createGrid(16);
+
+
+var curMode = setOpacityHandler();
+
+$('#size').click(function() {
+ var num = prompt("Please specify Grid width between 1-64");
+ createGrid(num);
+ curMode();
+ });
+$('#reset').click(function() {
+ 
+ resetOpacity();  
+ });
+$('#opacity').click(function() {
+  resetOpacity();  
+  curMode = setOpacityHandler;
+  curMode();
+  });
+
+$('#color').click(function(){
+  resetOpacity();
+  console.log("Set Color Change");
+  curMode = colorChange;
+  colorChange();
+});
+$('#mousetrail').click(function(){
+  resetOpacity();
+  console.log("Mouse Trails");
+  curMode = mouseTrails;
+  curMode();
+  removeBorder();
+});
+
+</script>
+
+</body>
+</html>

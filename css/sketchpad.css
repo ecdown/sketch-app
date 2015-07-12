@@ -1,0 +1,24 @@
+
+#sketchpad {
+  margin-top: 10px;
+  position:absolute;
+  left: 25%;
+  border: 1px solid black;
+  display:inline-block;
+}
+#sketchpad div.row div{
+  width: 100px;
+  height: 100px;
+  background-color: black;
+  margin: 1px;
+  float:left;
+  opacity: 0;
+}
+
+#sketchpad div.row {
+  display:flex;
+  margin-left: auto;
+  margin-right: auto;
+  clear:both;
+  justify-content: center; 
+}
